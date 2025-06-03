@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\IndustriController;
+use App\Http\Controllers\PklController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -9,9 +11,15 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth','verified', 'role:siswa'])->group(function () {
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('industri', [IndustriController::class,'index'])->name('industri');
+    Route::get('pkl', [PklController::class,'index'])->name('pkl');
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

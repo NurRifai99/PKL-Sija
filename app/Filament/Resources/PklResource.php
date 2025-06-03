@@ -31,7 +31,26 @@ class PklResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('siswa.nama')
+                    ->label('Nama Siswa')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('industri.nama')
+                    ->label('Nama Industri')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal_mulai')
+                    ->label('Tanggal Mulai')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal_selesai')
+                    ->label('Tanggal Selesai')
+                    ->date()
+                    ->sortable(),
+                
+            ])->filters([
                 //
+            ])->headerActions([
             ])
             ->filters([
                 //

@@ -40,6 +40,11 @@ class Login extends Component
             ]);
         }
 
+        if(Auth::user()->hasRole('super_admin')) {
+            $this->redirect(route('filament.admin.pages.dashboard', absolute: false), navigate: false);
+            return;
+        }
+
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 

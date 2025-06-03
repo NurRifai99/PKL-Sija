@@ -23,7 +23,31 @@ class IndustriResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama Industri')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('bidang_usaha')
+                    ->label('Bidang Usaha Industri')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('alamat')
+                    ->label('Alamat Industri')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kontak')
+                    ->label('Kontak Industri')
+                    ->required()
+                    ->maxLength(20),
+                Forms\Components\TextInput::make('email')
+                    ->label('Email Industri')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('website')
+                    ->label('Website Industri')
+                    ->url()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +55,28 @@ class IndustriResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Industri')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('bidang_usaha')
+                    ->label('Bidang Usaha')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat Industri')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kontak')
+                    ->label('Kontak Industri')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email Industri')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('website')
+                    ->label('Website Industri')
             ])
             ->filters([
                 //

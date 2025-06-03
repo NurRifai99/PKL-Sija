@@ -6,6 +6,9 @@ use App\Filament\Resources\SiswaResource\Pages;
 use App\Filament\Resources\SiswaResource\RelationManagers;
 use App\Models\Siswa;
 use Filament\Forms;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +26,35 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama Siswa')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nis')
+                    ->label('NIS')
+                    ->required()
+                    ->maxLength(20),
+                Radio::make('gender')
+                    ->label('Gender')
+                    ->options([
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->inline()
+                    ->required(),
+                TextInput::make('alamat')
+                    ->label('Alamat')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kontak')
+                    ->label('Kontak')
+                    ->required()
+                    ->maxLength(20),
+                TextInput::make('email')
+                    ->label('Email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +62,20 @@ class SiswaResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Siswa')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('nis')
+                    ->label('NIS')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status_pkl')
+                    ->label('Status PKL')
             ])
             ->filters([
                 //

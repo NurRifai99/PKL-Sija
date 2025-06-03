@@ -9,9 +9,11 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use function Laravel\Prompts\form;
 
 class GuruResource extends Resource
 {
@@ -23,7 +25,29 @@ class GuruResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama Guru')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nip')
+                    ->label('NIP')
+                    ->required()
+                    ->maxLength(20),
+                Forms\Components\Radio::make('gender')
+                    ->label('Gender')
+                    ->options([
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->inline(),
+                Forms\Components\TextInput::make('alamat')
+                    ->label('Alamat')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kontak')
+                    ->label('Kontak')
+                    ->required()
+                    ->maxLength(20),
             ]);
     }
 
@@ -31,7 +55,22 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nama')
+                    ->label('Nama Guru')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('nip')
+                    ->label('NIP')
+                    ->searchable(),
+                TextColumn::make('user.email')
+                    ->label('Email'),
+                TextColumn::make('gender')
+                    ->label('Gender')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                        default => $state,
+                    }),
             ])
             ->filters([
                 //

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -34,10 +35,24 @@ class Register extends Component
 
         $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered(($user = User::create($validated))));
+        $siswaexist = Siswa::where('email', $validated['email'])->first();
 
-        Auth::login($user);
+        if($siswaexist){
+            event(new Registered(($user = User::create($validated))));
 
+            $siswaexist->update([
+                'user_id' => $user->id,
+                'nama' => $validated['name'],
+            ]);
+
+            $user->assignRole('siswa');
+            Auth::login($user);
+
+        }else{
+            $this->addError('email', 'Email tidak terdaftar sebagai siswa.');
+            return;
+        }
+        
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
 }
