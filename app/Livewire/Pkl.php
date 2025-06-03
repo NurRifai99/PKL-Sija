@@ -34,7 +34,7 @@ class Pkl extends Component
         ]);
 
         $siswa_id = Auth()->user()->siswa->id;
-        if(!\App\Models\Pkl::where('siswa_id',$siswa_id)){
+        if(!\App\Models\Pkl::where('siswa_id',$siswa_id)->exists()){
 
             \App\Models\Pkl::create([
                 'siswa_id' => $siswa_id,
