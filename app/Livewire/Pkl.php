@@ -34,17 +34,20 @@ class Pkl extends Component
         ]);
 
         $siswa_id = Auth()->user()->siswa->id;
+        if(!\App\Models\Pkl::where('siswa_id',$siswa_id)){
 
-        \App\Models\Pkl::create([
-            'siswa_id' => $siswa_id,
-            'guru_id' => $this->guru_id,
-            'industri_id' => $this->industri_id,
-            'tanggal_mulai' => $this->tanggal_mulai,
-            'tanggal_selesai' => $this->tanggal_selesai,
-        ]);
+            \App\Models\Pkl::create([
+                'siswa_id' => $siswa_id,
+                'guru_id' => $this->guru_id,
+                'industri_id' => $this->industri_id,
+                'tanggal_mulai' => $this->tanggal_mulai,
+                'tanggal_selesai' => $this->tanggal_selesai,
+            ]);
 
-        $this->reset(['guru_id', 'industri_id','tanggal_mulai','tanggal_selesai', 'showModal']);
-        session()->flash('message', 'Industri berhasil ditambahkan.');
-
+            $this->reset(['guru_id', 'industri_id','tanggal_mulai','tanggal_selesai', 'showModal']);
+            session()->flash('message', 'Industri berhasil ditambahkan.');
+        }else{
+            $this->addError('tanggal_selesai','Sudah Daftar Ya');
+        }
     }
 }

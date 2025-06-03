@@ -10,11 +10,14 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class SiswaResource extends Resource
 {
@@ -93,7 +96,31 @@ class SiswaResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('delete')
+                    ->label('hapus')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records){
+                        $deletedCount = 0;
+
+                        foreach ($records as $record) {
+                            if ($record->status_pkl === 'belum') {
+                                try {
+                                    $record->delete();
+                                    $deletedCount++;
+                                } catch (\Throwable $th) {
+                                    
+                                }
+                            } 
+                        }
+                        Notification::make()
+                                ->title('Delete Siswa Selesai')
+                                ->body("Berhasil menghapus {$deletedCount} record.")
+                                ->success()
+                                ->send();
+                    }),
                 ]),
             ]);
     }
@@ -116,6 +143,8 @@ class SiswaResource extends Resource
 
     public static function canDelete($record): bool
     {
-        return $record->status_pkl !== 'sudah';
+        return $record->status_pkl === 'belum';
     }
+
+
 }

@@ -14,7 +14,7 @@ class GuruApi extends Controller
      */
     public function index()
     {
-        $guru = \App\Models\Guru::all();
+        $guru = Guru::all();
         return response()->json([
             'success' => true,
             'message' => 'List Guru',
@@ -93,6 +93,13 @@ class GuruApi extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $guru = Guru::find($id);
+        if (!$guru) {
+            return response()->json([
+                'success' => false,
+                'message' => 'guru not found',
+            ], 404);
+        }
+        $guru->delete();
     }
 }

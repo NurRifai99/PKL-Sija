@@ -59,24 +59,19 @@ class IndustriResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Industri')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('bidang_usaha')
                     ->label('Bidang Usaha')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat Industri')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kontak')
                     ->label('Kontak Industri')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email Industri')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('website')
                     ->label('Website Industri')
             ])

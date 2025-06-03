@@ -25,7 +25,8 @@ class PklApi extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        
     }
 
     /**
