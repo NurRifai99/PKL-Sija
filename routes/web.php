@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\IndustriController;
 use App\Http\Controllers\PklController;
+use App\Livewire\Industri;
+use App\Livewire\Pkl;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -16,8 +18,8 @@ Route::middleware(['auth','verified', 'role:siswa'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('industri', [IndustriController::class,'index'])->name('industri');
-    Route::get('pkl', [PklController::class,'index'])->name('pkl');
+    Route::get('industri', Industri::class)->name('industri');
+    Route::get('pkl', Pkl::class)->name('pkl');
 });
 
 

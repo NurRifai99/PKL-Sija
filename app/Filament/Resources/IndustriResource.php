@@ -46,7 +46,6 @@ class IndustriResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('website')
                     ->label('Website Industri')
-                    ->url()
                     ->maxLength(255),
             ]);
     }
