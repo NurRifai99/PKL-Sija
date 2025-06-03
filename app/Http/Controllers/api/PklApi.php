@@ -25,8 +25,36 @@ class PklApi extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+        $data = $request->validate([
+            'guru_id' => 'required|exists:gurus,id',
+            'industri_id' => 'required|exists:industris,id',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+        ], [
+            'after' => 'Tanggal selesai harus setelah tanggal mulai.',
+        ]);
+        $siswa_id = auth()->user()->siswa->id;
+        if (!\App\Models\Pkl::where('siswa_id', $siswa_id)->exists()) {
+            $pkl = \App\Models\Pkl::create([
+                'siswa_id' => $siswa_id,
+                'guru_id' => $data['guru_id'],
+                'industri_id' => $data['industri_id'],
+                'tanggal_mulai' => $data['tanggal_mulai'],
+                'tanggal_selesai' => $data['tanggal_selesai'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'PKL created successfully',
+                'data' => $pkl
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah terdaftar PKL',
+            ], 400);
+        }
+
     }
 
     /**
@@ -53,7 +81,29 @@ class PklApi extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pkl = \App\Models\Pkl::find($id);
+        if (!$pkl) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pkl not found',
+            ], 404);
+        }
+
+        $data = $request->validate([
+            'guru_id' => 'required|exists:gurus,id',
+            'industri_id' => 'required|exists:industris,id',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+        ], [
+            'after' => 'Tanggal selesai harus setelah tanggal mulai.',
+        ]);
+
+        $pkl->update($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Pkl updated successfully',
+            'data' => $pkl
+        ]);
     }
 
     /**

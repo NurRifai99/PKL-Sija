@@ -25,7 +25,22 @@ class IndustriApi extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'bidang_usaha' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'website' => 'nullable|url|max:255',
+            'kontak' => 'required|string|max:20',
+        ]);
+
+        $industri = \App\Models\Industri::create($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Industri created successfully',
+            'data' => $industri
+        ], 201);
     }
 
     /**
@@ -33,7 +48,18 @@ class IndustriApi extends Controller
      */
     public function show(string $id)
     {
-        //
+        $industri = \App\Models\Industri::find($id);
+        if (!$industri) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Industri not found',
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Industri details',
+            'data' => $industri
+        ]);
     }
 
     /**
@@ -41,7 +67,31 @@ class IndustriApi extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $industri = \App\Models\Industri::find($id);
+        if (!$industri) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Industri not found',
+            ], 404);
+        }
+
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'bidang_usaha' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'website' => 'nullable|url|max:255',
+            'kontak' => 'required|string|max:20',
+
+        ]);
+
+        $industri->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Industri updated successfully',
+            'data' => $industri
+        ]);
     }
 
     /**
@@ -49,6 +99,17 @@ class IndustriApi extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $industri = \App\Models\Industri::find($id);
+        if (!$industri) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Industri not found',
+            ], 404);
+        }
+        $industri->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Industri deleted successfully',
+        ]);
     }
 }
