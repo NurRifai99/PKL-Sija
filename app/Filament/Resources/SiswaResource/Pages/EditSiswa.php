@@ -16,4 +16,14 @@ class EditSiswa extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array{
+            $this->record->user->update([
+                'name' => $data['nama'],
+                'email' => $data['email'],
+            ]);
+
+            return $data;
+    }
+    
 }
