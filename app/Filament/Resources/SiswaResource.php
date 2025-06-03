@@ -113,4 +113,9 @@ class SiswaResource extends Resource
             'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
+
+    public static function canDelete($record): bool
+    {
+        return $record->status_pkl !== 'sudah';
+    }
 }

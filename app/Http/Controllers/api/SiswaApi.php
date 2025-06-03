@@ -14,7 +14,7 @@ class SiswaApi extends Controller
      */
     public function index()
     {
-        $siswa = \App\Models\Siswa::all();
+        $siswa = Siswa::all();
         return response()->json([
             'success' => true,
             'message' => 'List  Siswa',
@@ -44,7 +44,7 @@ class SiswaApi extends Controller
             ], 422);
         }
 
-        $siswa = \App\Models\Siswa::create([
+        $siswa = Siswa::create([
             'nama' => $request->nama,
             'nis' => $request->nis,
             'gender' => $request->gender,
@@ -68,7 +68,7 @@ class SiswaApi extends Controller
      */
     public function show(string $id)
     {
-        $siswa = \App\Models\Siswa::find($id);
+        $siswa = Siswa::find($id);
         if (!$siswa) {
             return response()->json([
                 'success' => false,
@@ -85,17 +85,27 @@ class SiswaApi extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, string $id)
     {
-        $data = Validator([
-            'nama' => 'required|string|max:255',
-            'nis' => 'required|string|max:20|unique:siswas,nis',
+        $siswa = Siswa::find($id);
+        if (!$siswa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa not found',
+            ], 404);
+        }
+
+        $data = Validator::make($request->all(), [
+            'nama' => 'sometimes|string|max:255',
+            'nis' => 'required|string|max:20',
             'gender' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',
             'kontak' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'status_pkl' => 'in:sudah,belum',
         ]);
+
         if ($data->fails()) {
             return response()->json([
                 'success' => false,
@@ -103,34 +113,38 @@ class SiswaApi extends Controller
                 'errors' => $data->errors()
             ], 422);
         }
-        $siswa = Siswa::find($id);
 
         $siswa->update([
             'nama' => $request->nama,
-            'nis' => $request->nis,
+            'nis' =>$request->nis,
             'gender' => $request->gender,
             'alamat' => $request->alamat,
             'kontak' => $request->kontak,
             'email' => $request->email,
             'status_pkl' => $request->status_pkl ?? 'belum',
-
+            
         ]);
-
 
         return response()->json([
             'success' => true,
-            'message' => 'Siswa created successfully',
+            'message' => 'Siswa updated successfully',
             'data' => $siswa
-        ], 201);
-
-        
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $siswa = Siswa::find($id);
+        if (!$siswa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa not found',
+            ], 404);
+        }
+        $siswa->delete();   
     }
 }
