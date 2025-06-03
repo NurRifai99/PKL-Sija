@@ -39,6 +39,10 @@ class PklResource extends Resource
                     ->label('Nama Industri')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('guru.nama')
+                    ->label('Nama Guru Pembimbing')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_mulai')
                     ->label('Tanggal Mulai')
                     ->date()

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('kontak');
             $table->string('email')->nullable();
             $table->string('foto')->nullable();
-            $table->enum('status_pkl',['sudah','belum'])->nullable();
+            $table->enum('status_pkl',['sudah','belum'])->default('belum')->nullable();
             $table->timestamps();
         });
     }

@@ -49,6 +49,9 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('kontak')
                     ->label('Kontak')
                     ->required()
+                    ->dehydrateStateUsing(function ($state) {
+                        return preg_replace('/^0/', '62', $state);
+                    })
                     ->maxLength(20),
                 TextInput::make('email')
                     ->label('Email')
@@ -76,6 +79,11 @@ class SiswaResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_pkl')
                     ->label('Status PKL')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'belum' => 'Belum PKL',
+                        'sudah' => 'Sudah PKL',
+                        default => $state,
+                    }),
             ])
             ->filters([
                 //

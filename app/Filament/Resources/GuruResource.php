@@ -47,6 +47,9 @@ class GuruResource extends Resource
                 Forms\Components\TextInput::make('kontak')
                     ->label('Kontak')
                     ->required()
+                    ->dehydrateStateUsing(function ($state) {
+                        return preg_replace('/^0/', '62', $state);
+                    })
                     ->maxLength(20),
             ]);
     }

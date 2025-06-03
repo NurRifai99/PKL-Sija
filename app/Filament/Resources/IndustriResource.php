@@ -38,6 +38,9 @@ class IndustriResource extends Resource
                 Forms\Components\TextInput::make('kontak')
                     ->label('Kontak Industri')
                     ->required()
+                    ->dehydrateStateUsing(function ($state) {
+                        return preg_replace('/^0/', '62', $state);
+                    })
                     ->maxLength(20),
                 Forms\Components\TextInput::make('email')
                     ->label('Email Industri')
