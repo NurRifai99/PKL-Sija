@@ -88,18 +88,10 @@ class SiswaApi extends Controller
 
     public function update(Request $request, string $id)
     {
-        $siswa = Siswa::find($id);
-        if (!$siswa) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Siswa not found',
-            ], 404);
-        }
-
         $data = Validator::make($request->all(), [
             'nama' => 'sometimes|string|max:255',
-            'nis' => 'required|string|max:20',
-            'gender' => 'required|in:L,P',
+            'nis' => 'required',
+            'gender' => 'required',
             'alamat' => 'required|string|max:255',
             'kontak' => 'required|string|max:20',
             'email' => 'required|email|max:255',
@@ -112,6 +104,15 @@ class SiswaApi extends Controller
                 'message' => 'Validation Error',
                 'errors' => $data->errors()
             ], 422);
+        }
+
+        $siswa = Siswa::find($id);
+        
+        if (!$siswa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa not found',
+            ], 404);
         }
 
         $siswa->update([

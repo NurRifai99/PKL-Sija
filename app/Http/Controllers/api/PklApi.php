@@ -33,7 +33,18 @@ class PklApi extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pkl = \App\Models\Pkl::with(['siswa', 'industri','guru'])->find($id);
+        if (!$pkl) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pkl not found',
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Pkl',
+            'data' => $pkl
+        ]);
     }
 
     /**
@@ -49,6 +60,18 @@ class PklApi extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pkl = \App\Models\Pkl::find($id);
+        if (!$pkl) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pkl not found',
+            ], 404);
+        }
+
+        $pkl->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Pkl deleted successfully',
+        ]);
     }
 }
